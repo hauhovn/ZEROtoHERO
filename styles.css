@@ -1,9 +1,11 @@
-#myH1{
-    color:black;
+#myH1 {
+    color: rgb(12, 7, 7);
 }
-#myBtn{
+
+#myBtn {
     font-size: 3em;
 }
-.list-programs *{
+
+.list-programs * {
     font-size: 2em;
 }

@@ -1,0 +1,54 @@
+.player-list-container ul li {
+    display: flex;
+    list-style-type: none;
+    padding: 10px 0px 10px 0px;
+    align-items: center;
+}
+
+.player-list-container ul {
+    margin: 0;
+    padding: 0;
+}
+
+.player-list-container ul li div {
+    width: 80%;
+    font-size: 1.5em;
+    text-align: left;
+}
+
+.player-list-container ul li a {
+    align-self: flex-end;
+    text-decoration: none;
+    color: aliceblue;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.player-list-container ul li .deleteBtn {
+    margin-left: 5px;
+    background-color: rgb(238, 102, 49);
+}
+
+.player-list-container ul li .editBtn {
+    margin-left: 5px;
+    background-color: rgb(102, 219, 56);
+}
+
+.input-form {
+    display: flex;
+}
+
+#addPlayerText {
+    height: 35px;
+    resize: none;
+    border-radius: 5px;
+}
+
+#addPlayerBtn {
+    height: 42px;
+    background-color: rgb(150, 214, 214);
+    font-size: 1em;
+    padding: 10px;
+    border-radius: 6px;
+    margin-left: 5px;
+}

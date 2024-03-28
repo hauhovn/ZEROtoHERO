@@ -1,25 +1,44 @@
-.box{
+.box {
     height: 45px;
     width: 45px;
     border-radius: 8px;
     font-size: 2.5em;
     text-align: center;
 }
-.container{
+
+.container {
     display: flex;
-    flex-direction:column;/**/
-    justify-content: space-evenly;/**/
-    align-items:center; /**/
+    flex-direction: row;
+    /**/
+    justify-content: space-evenly;
+    /**/
+    align-items: center;
+    /**/
     border: 10px solid black;
+    align-content: flex-start;
     height: 20em;
+    flex-wrap: wrap;
+    gap: 1em;
 }
 
-#div1{
+#div1,
+#div12,
+#div13 {
     background-color: rgb(107, 190, 163);
+    order: 2;
+    flex: .5;
 }
-#div2{
+
+#div2,
+#div22,
+#div23 {
     background-color: rgb(94, 100, 187);
+    flex: .25;
 }
-#div3{
+
+#div3,
+#div32,
+#div33 {
     background-color: rgb(180, 90, 176);
+    order: -1;
 }
