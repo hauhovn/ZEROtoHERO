@@ -74,7 +74,7 @@ function colorRandom() {
 addPlayerBtn.onclick = function () {
     //them moi
     let newPlayer = { ten: addPlayerText.value, diemSo: 0, soLanChoi: 0, mauSac: colorRandom() };
-    playerData.push(newPlayer);
+    playerData.unshift(newPlayer);
     console.log(playerData);
     addPlayerText.value = ""
     // localStorage.setItem(PLAYER_LIST_KEY, JSON.stringify(playerData));
@@ -89,12 +89,13 @@ function renderplayerData(players) {
     players.forEach((item, index) => {
         console.log(item)
         content += `<li>
-            <div style="background-color: ${item.mauSac}">${item.ten}</div>
+            <p>${item.ten}<div style="background-color: ${item.mauSac}" class="player-color-point"></p>
             <a href="#" onclick=editPlayer("${index}") class="editBtn" id="edit${index}">Edit</a>
             <a href="#" onclick=deletePlayer("${index}") class="deleteBtn" id="delete${index}">Delete</a>
-         </li>`
+         </li><hr>`
     })
     content += '<ul>';
+    console.log(content)
     listPlayer.innerHTML = content;
     //document.querySelector("#listPlayer").innerHTML = content;
 }

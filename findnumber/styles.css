@@ -1,7 +1,6 @@
-.player-list-container ul li {
+.player-list-container div ul li {
     display: flex;
     list-style-type: none;
-    padding: 10px 0px 10px 0px;
     align-items: center;
 }
 
@@ -10,10 +9,10 @@
     padding: 0;
 }
 
-.player-list-container ul li div {
-    width: 80%;
-    font-size: 1.5em;
-    text-align: left;
+.player-list-container #listPlayer >ul >li >div {
+    display: flex;
+    text-align: center;
+    background-color: aqua;
 }
 
 .player-list-container ul li a {
@@ -51,4 +50,10 @@
     padding: 10px;
     border-radius: 6px;
     margin-left: 5px;
+}
+
+.player-color-point{
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
 }
