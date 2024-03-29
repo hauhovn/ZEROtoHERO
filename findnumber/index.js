@@ -4,11 +4,12 @@ const minNumberBtn = document.getElementById(`minNumberBtn`);
 
 const addPlayerText = document.getElementById(`addPlayerText`);
 const addPlayerBtn = document.getElementById(`addPlayerBtn`);
+const deleteAllBtn = document.getElementById(`deleteAllBtn`);
 const listPlayer = document.getElementById(`listPlayer`);
 
-
-
 const myH1 = document.querySelector("#myH1");
+
+const PLAYER_LIST_KEY = 'player-list-KEY';
 
 let max = Number(maxNumberBtn.value);
 let min = Number(minNumberBtn.value);
@@ -16,10 +17,14 @@ let answer = myRandom(min, max);
 
 let isRuning = false;
 let counter = 0;
+let playerData;
+let isEdit = -1;
+let isReset = false;
 
-let playerData = [];
+let isMultiPlayerMODE = false;
+let thuTuChoi = 0;
 
-const PLAYER_LIST_KEY = 'player-list-KEY';
+renderplayerData(checkLocalData())
 
 maxNumberBtn.onchange = function () {
     max = Number(maxNumberBtn.value);
@@ -32,16 +37,21 @@ myH1.addEventListener('click', function () {
     myH1.style.color = colorRandom()
 })
 
-myBtn.onclick = function () {
+document.getElementById("multiPlayBtn").onclick = function () { isMultiPlayerMODE = true; startPlay() }
+document.getElementById("myBtn").onclick = function () { isMultiPlayerMODE = false; startPlay() }
+
+function startPlay() {
     // nhieu nguoi choi /??? loi ham random count so luong lown // choi nhieu vong` // tong ket diem
     isRuning = true;
+    resetCountPlayer()
+
     while (isRuning) {
-        counter++;
-        console.log(`Number = ${answer} MIN = ${min} MAX = ${max} COUNT = ${counter}`)
-        input = window.prompt(`Số cần tìm là từ: ${min} đến ${max}`);
+        console.log(`Number = ${answer} MIN = ${min} MAX = ${max} COUNT = ${counter} MULTI_MODE = ${isMultiPlayerMODE}`)
+        input = window.prompt(`Số ${isMultiPlayerMODE ? playerData[thuTuChoi].ten : "bạn"} cần tìm là từ: ${min} đến ${max}`);
+
         console.log(input);
         if (isNaN(input) && input != "") {
-            window.alert(`VUI LÒNG NHẬP SỐ TỪ ${min} ĐẾN ${max}!`)
+            window.alert(`${isMultiPlayerMODE ? playerData[thuTuChoi].ten : ""} VUI LÒNG NHẬP SỐ TỪ ${min} ĐẾN ${max}!`)
             continue;
         }
         if (input > answer) {
@@ -54,9 +64,21 @@ myBtn.onclick = function () {
             if (input == answer) {
                 isRuning = false;
                 answer = myRandom(min, max);
-                window.alert(`CHÚC MỪNG BẠN ĐÃ THÀNH CÔNG SAU ${counter} LẦN ĐOÁN!`)
-                counter = 0;
+                window.alert(`CHÚC MỪNG ${isMultiPlayerMODE ? playerData[thuTuChoi].ten : "BẠN"} ĐÃ THÀNH CÔNG SAU ${isMultiPlayerMODE ? playerData[thuTuChoi].soLanChoi : counter} LẦN ĐOÁN!`)
+                thuTuChoi = 0;
+                console.log(`thu tu choi = 0`)
+                playerData[thuTuChoi].diemSo = playerData[thuTuChoi].diemSo + 1;
+                console.log(`udpate diem: `, playerData[thuTuChoi])
+                isMultiPlayerMODE ? localStorage.setItem(PLAYER_LIST_KEY, JSON.stringify(playerData)) : counter = 0
+                renderplayerData(playerData);
             }
+
+        if (isMultiPlayerMODE) {
+            let slc = playerData[thuTuChoi].soLanChoi;
+            playerData[thuTuChoi].soLanChoi = slc + 1;
+            if (thuTuChoi == playerData.length - 1 || !isRuning) thuTuChoi = 0; else thuTuChoi++
+        } else
+            counter++;
     }
 }
 
@@ -72,31 +94,57 @@ function colorRandom() {
 }
 
 addPlayerBtn.onclick = function () {
-    //them moi
-    let newPlayer = { ten: addPlayerText.value, diemSo: 0, soLanChoi: 0, mauSac: colorRandom() };
-    playerData.unshift(newPlayer);
-    console.log(playerData);
+    if (addPlayerText.value == "") return;
+    //lay gia tri
+    let newPlayer = { ten: addPlayerText.value, diemSo: 0, soLanChoi: 1, mauSac: colorRandom() };
+    console.log(`newPlayer `, newPlayer)
+    //kiem tra add - edit
+    if (isEdit == -1) {
+        //them moi
+        checkLocalData()
+        playerData.unshift(newPlayer)
+    } else {
+        // chinh sua
+        playerData[isEdit].ten = addPlayerText.value;
+        isEdit = -1;
+    }
+    //update
+    localStorage.setItem(PLAYER_LIST_KEY, JSON.stringify(playerData));
     addPlayerText.value = ""
-    // localStorage.setItem(PLAYER_LIST_KEY, JSON.stringify(playerData));
     renderplayerData(playerData)
-    // chinh sua
+}
+
+deleteAllBtn.onclick = function () {
+    localStorage.removeItem(PLAYER_LIST_KEY);
+    renderplayerData(playerData = [])
 }
 
 
 function renderplayerData(players) {
-
+    console.log(`khong render`, players)
+    if (players == []) return
+    console.log(`render`, players)
     let content = '<ul>'
     players.forEach((item, index) => {
-        console.log(item)
-        content += `<li>
-            <p>${item.ten}<div style="background-color: ${item.mauSac}" class="player-color-point"></p>
-            <a href="#" onclick=editPlayer("${index}") class="editBtn" id="edit${index}">Edit</a>
-            <a href="#" onclick=deletePlayer("${index}") class="deleteBtn" id="delete${index}">Delete</a>
-         </li><hr>`
+        content +=
+            `<li>
+        <div>
+            <div style="background-color: ${item.mauSac}" class="player-color-point"></div>
+            <p class="player-name">${item.ten} (${item.diemSo})</p>
+        </div>
+        <div>
+            <a href="#" class="resetBtn" onclick=resetPlayer("${index}")  id="reset${index}">Reset</a>
+            <a href="#" class="editBtn" onclick=editPlayer("${index}")  id="edit${index}">Edit</a>
+            <a href="#" class="deleteBtn" onclick=deletePlayer("${index}") id="delete${index}">Delete</a>
+        </div>
+         </li>
+     <hr>`
     })
     content += '<ul>';
-    console.log(content)
     listPlayer.innerHTML = content;
+    let slnc = playerData.length;
+    document.querySelector("#soLuongPlayer").textContent = `SỐ LƯỢNG NGƯỜI CHƠI (${slnc})`
+    document.getElementById("multiPlayBtn").disabled = slnc > 1 ? false : true
     //document.querySelector("#listPlayer").innerHTML = content;
 }
 
@@ -108,5 +156,27 @@ function deletePlayer(id) {
 }
 
 function editPlayer(id) {
-    window.alert(`edit ${id}`)
+    isEdit = id;
+    console.log(`chinh sua editPlayer ${isEdit}`)
+    addPlayerText.value = playerData[id].ten;
+}
+
+function resetPlayer(id) {
+    playerData[id].diemSo = 0;
+    playerData[id].soLanChoi = 1;
+    playerData[id].mauSac = colorRandom();
+    renderplayerData(playerData);
+}
+
+function checkLocalData() {
+    let readData = JSON.parse(localStorage.getItem(PLAYER_LIST_KEY));
+    readData == null ? playerData = [] : playerData = readData;
+    return playerData
+
+}
+
+function resetCountPlayer() {
+    playerData.forEach((item, index) => {
+        playerData[index].soLanChoi = 1;
+    })
 }

@@ -9,11 +9,12 @@
 </head>
 
 <body>
-    <h1 id="myH1">Hãy chọn số đúng</h1>
     <a href="../index.html">
         <h1>back to home</h1>
-    </a>
-    <button id="myBtn">submit</button>
+    </a><br><br>
+    <h1 id="myH1">Hãy chọn số đúng</h1>
+    <button class="action-button" id="myBtn">1 NGƯỜI CHƠI</button>
+    <button class="action-button" id="multiPlayBtn" disabled>NHIỀU NGƯỜI CHƠI</button>
     <div>
         <label for="minNumberBtn">Min</label>
         <input type="number" id="minNumberBtn" value="0">
@@ -24,22 +25,13 @@
     <div class="player-list-container"><br><br>
         <hr>
         <div class="input-form">
-            <input placeholder="nhap ten nguoi choi" id="addPlayerText"></input>
-            <button id="addPlayerBtn">Luu</button>
+            <input placeholder="NHẬP TÊN CỦA BẠN" id="addPlayerText"></input>
+            <button id="addPlayerBtn" class="action-button">LƯU</button>
+            <button id="deleteAllBtn" class="action-button">XÓA HẾT NGƯỜI CHƠI</button>
         </div>
-        <h2>Danh sach nguoi choi (1)</h2>
+        <h2 id="soLuongPlayer">SỐ LƯỢNG NGƯỜI CHƠI (0)</h2>
+
         <div id="listPlayer">
-            <ul>
-                <li>
-                    <div>
-                        <p>Player name</p>
-                        <div style="background-color: rgb(215,54,212)" class="player-color-point"></div>
-                    </div>
-                    <a href="#" class="editBtn" id="edit0">Edit</a>
-                    <a href="#" class="deleteBtn" id="delete0">Delete</a>
-                </li>
-                <hr>
-                <ul>
         </div>
     </div>
 
