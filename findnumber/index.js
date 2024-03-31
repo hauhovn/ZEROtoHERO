@@ -65,10 +65,9 @@ function startPlay() {
                 isRuning = false;
                 answer = myRandom(min, max);
                 window.alert(`CHÚC MỪNG ${isMultiPlayerMODE ? playerData[thuTuChoi].ten : "BẠN"} ĐÃ THÀNH CÔNG SAU ${isMultiPlayerMODE ? playerData[thuTuChoi].soLanChoi : counter} LẦN ĐOÁN!`)
-                thuTuChoi = 0;
-                console.log(`thu tu choi = 0`)
+
                 playerData[thuTuChoi].diemSo = playerData[thuTuChoi].diemSo + 1;
-                console.log(`udpate diem: `, playerData[thuTuChoi])
+                thuTuChoi = 0;
                 isMultiPlayerMODE ? localStorage.setItem(PLAYER_LIST_KEY, JSON.stringify(playerData)) : counter = 0
                 renderplayerData(playerData);
             }
@@ -180,3 +179,7 @@ function resetCountPlayer() {
         playerData[index].soLanChoi = 1;
     })
 }
+
+addPlayerText.addEventListener("keypress", function (event) {
+    if (event.key == "Enter") addPlayerBtn.click()
+})
