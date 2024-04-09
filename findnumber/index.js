@@ -64,11 +64,18 @@ function startPlay() {
             if (input == answer) {
                 isRuning = false;
                 answer = myRandom(min, max);
+<<<<<<< HEAD
                 window.alert(`CHÚC MỪNG ${isMultiPlayerMODE ? playerData[thuTuChoi].ten : "BẠN"} ĐÃ THÀNH CÔNG SAU ${isMultiPlayerMODE ? playerData[thuTuChoi].soLanChoi : counter} LẦN ĐOÁN!`)                
                 
                 playerData[thuTuChoi].diemSo = playerData[thuTuChoi].diemSo + 1;
                 thuTuChoi = 0;
                 
+=======
+                window.alert(`CHÚC MỪNG ${isMultiPlayerMODE ? playerData[thuTuChoi].ten : "BẠN"} ĐÃ THÀNH CÔNG SAU ${isMultiPlayerMODE ? playerData[thuTuChoi].soLanChoi : counter} LẦN ĐOÁN!`)
+
+                playerData[thuTuChoi].diemSo = playerData[thuTuChoi].diemSo + 1;
+                thuTuChoi = 0;
+>>>>>>> 28bad9c80ec3966f5a702704fbd3f3b72ff847ed
                 isMultiPlayerMODE ? localStorage.setItem(PLAYER_LIST_KEY, JSON.stringify(playerData)) : counter = 0
                 renderplayerData(playerData);
             }
@@ -180,3 +187,7 @@ function resetCountPlayer() {
         playerData[index].soLanChoi = 1;
     })
 }
+
+addPlayerText.addEventListener("keypress", function (event) {
+    if (event.key == "Enter") addPlayerBtn.click()
+})

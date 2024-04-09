@@ -1,0 +1,28 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    height: 480px;
+    width: 480px;
+}
+
+html {
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+}
+
+body {
+    height: fit-content;
+}
+
+canvas #game {
+    border: 1px solid white;
+}
+
+#score {
+    color: aliceblue;
+    font-size: 3em;
+}
