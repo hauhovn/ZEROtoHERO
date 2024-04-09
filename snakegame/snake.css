@@ -10,19 +10,22 @@ body {
 html {
     background-color: black;
     display: flex;
+    align-items: center;
     justify-content: center;
     height: 100vh;
 }
 
 body {
     height: fit-content;
-}
-
-canvas #game {
-    border: 1px solid white;
+    align-self: center;
 }
 
 #score {
     color: aliceblue;
     font-size: 3em;
+    margin-left: 125px;
+}
+
+#backgroundGame{
+    border: 3px solid white;
 }
