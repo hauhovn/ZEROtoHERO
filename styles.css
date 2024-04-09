@@ -1,11 +1,49 @@
-#myH1 {
-    color: rgb(12, 7, 7);
+*{font-family: Verdana, Geneva, Tahoma, sans-serif;}
+body{
+    margin: 0;
+    padding: 0;
+    background-color: gray;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
 }
 
-#myBtn {
-    font-size: 3em;
+body ul {
+    list-style-type: none;
+    display: flex;
+}
+body ul li {
+    padding: 10px;
+    margin: 5px;
+    background-color: rgb(91, 185, 154);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    box-shadow: 6px 10px 30px 0px rgba(0,0,0,0.66);
+    -webkit-box-shadow: 6px 10px 30px 0px rgba(0,0,0,0.66);
+    -moz-box-shadow: 6px 10px 30px 0px rgba(0,0,0,0.66);
+}
+body ul li a{
+    text-decoration: none;
+    color: rgb(231, 231, 231);
+    text-transform: uppercase;
+    font-size: 2rem;
+    margin-left: 15px;
 }
 
-.list-programs * {
-    font-size: 2em;
+body ul li img {
+    height: 50px;
+    width: 50px;
+    fill: rgb(55, 122, 180);
+}
+
+h1{
+    font-size: 10rem;
+    margin: 0;
+    text-shadow: -13px 7px 8px rgba(0,0,0,0.31);
 }
