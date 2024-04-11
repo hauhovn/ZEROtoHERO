@@ -1,0 +1,24 @@
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-color: #ff000033;
+  --second-color: #ff000033;
+  --light-color: #ff000033;
+  --dark-color: #ff000033;
+  --background-color: #ff000033;
+  --small-size: 12px;
+  --medium-size: 12px;
+  --lagre-size: 12px;
+  --margin-size: 2px;
+  --border-w-size: 2px;
+}
+
+body {
+  background-color: var(--background-color);
+}
+p {
+  font-size: var(--lagre-size);
+}

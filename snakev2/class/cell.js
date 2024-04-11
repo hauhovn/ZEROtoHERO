@@ -1,22 +1,24 @@
-class Cell {
+import {THEME_COLORS} from '../constants.js'
+export default class Cell {
     constructor(x, y, width=0,height=0) {
       this.x = x;
-      this.x = y;
+      this.y = y;
       this.width=width;
       this.height=height;
     }
+    //setters
     set x(x) {
-      if (typeof x == "number" && Math.floor(x) == x) {
+      if (typeof x == "number") {
         this._x = x;
       } else {
-        console.error(`Cell class: Số ${x} không phải số nguyên`);
+        console.error(`Cell CLASS: Số ${x} không phải số nguyên`);
       }
     }
     set y(y) {
-      if (typeof y == "number" && Math.floor(y) == y) {
+      if (typeof y == "number") {
         this._y = y;
       } else {
-        console.error(`Cell class: Số ${y} không phải số nguyên`);
+        console.error(`Cell CLASS: Số ${y} không phải số nguyên`);
       }
     }
 
@@ -24,17 +26,17 @@ class Cell {
       if(typeof width == "number" && width>=0){
         this._width=width;
       }else{
-        console.error(`Cell class: Width ${width} không đúng`);
+        console.error(`Cell CLASS: Width ${width} không đúng`);
       }
     }
     set height(height){
       if(typeof height == "number" && height>=0){
         this._height=height;
       }else{
-        console.error(`Cell class: height ${height} không đúng`);
+        console.error(`Cell CLASS: height ${height} không đúng`);
       }
     }
-  
+  //getters
     get x() {
       return this._x;
     }
@@ -49,9 +51,22 @@ class Cell {
       return this._height;
     }
   
-    displayCell(){
-      console.log(`[${this.x}:${this.y}][${this.width} x ${this.height}]`);
+    log(title=''){
+      console.log(`${title}[${this.x}:${this.y}][${this.width} x ${this.height}]`);
     }
+
+    draw(ctx,color=THEME_COLORS.SECOND){
+        ctx.fillStyle = color;
+        ctx.fillRect(this.x,this.y,this.width,this.height);
+      }
+
+      
+      move(ctx,x,y){
+        //clear old
+        ctx.clearRect(this.x,this.y,this.width,this.height);
+        this._x=x;
+        this._y=y;
+        this.draw(ctx)
+      }
   }
 
-  export default Cell;
