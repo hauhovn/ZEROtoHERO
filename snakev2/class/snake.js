@@ -1,49 +1,89 @@
 import { DIRECTION } from "../text-constants.js";
+import Cell from "./cell.js";
 
 export default class Snake {
-  constructor(cells, speed = 1, direction = DIRECTION.RIGHT) {
-    this.cells = cells;
-    this.speed = speed;
-    this.direction = direction;
-    document.addEventListener("keydown", this.keydown);
-  }
-  draw(ctx) {
-    this.cells.forEach((cell) => {
-      cell.draw(ctx);
-    });
-  }
-  eat(food) {
-    food.log(`Your food:`);
-  }
+    constructor(cells, speed = 1, direction = DIRECTION.RIGHT) {
+        this.cells = cells;
+        this.speed = speed;
+        this.direction = direction;
+        // document.addEventListener("keydown", (e) => this.keydown(e));
+        this.keydown = this.keydown.bind(this);
+        document.addEventListener("keydown", this.keydown);
+    }
+    draw(ctx) {
+        this.cells.forEach((cell) => {
+            cell.draw(ctx);
+        });
 
-  die() {}
+    }
+    move(ctx) {
+        // add new head
+        this.cells.unshift(this.getNextStep());
+        // draw snake
+        this.draw(ctx)
+        //remove teil
+        this.cells[this.cells.length - 1].clear(ctx);
+        this.cells.pop();
+    }
 
-  
-  
-  keydown(e) {
-   //Event Listener
-    if (DIRECTION.UP.includes(e.code) && DIRECTION.UP !== this.direction) {
-      // key up
-      this.direction = DIRECTION.UP;
-      console.log(this.direction);
+    eat(food) {
+        food.log(`Your food:`);
     }
-    if (DIRECTION.DOWN.includes(e.code) && DIRECTION.DOWN !== this.direction) {
-      // key down
-      this.direction = DIRECTION.DOWN;
-      console.log(this.direction);
+
+    getNextStep() {
+        const newCell = Cell.clone(this.cells[0]);
+        // console.log(this.direction);
+        // get new location
+        if (this.direction === DIRECTION.UP) {
+            newCell.y -= newCell.height + 2;
+        }
+        if (this.direction === DIRECTION.DOWN) {
+            newCell.y += newCell.height + 2;
+        }
+        if (this.direction === DIRECTION.RIGHT) {
+            newCell.x += newCell.width + 2;
+        }
+        if (this.direction === DIRECTION.LEFT) {
+            newCell.x -= newCell.width + 2;
+        }
+        if (newCell == this.cells[0]) return false;
+        return newCell;
     }
-    if (
-      DIRECTION.RIGHT.includes(e.code) &&
-      DIRECTION.RIGHT !== this.direction
-    ) {
-      // key right
-      this.direction = DIRECTION.RIGHT;
-      console.log(this.direction);
+
+
+    keydown = (e) => {
+        //Event Listener
+        if (DIRECTION.UP.includes(e.code) &&
+            DIRECTION.UP !== this.direction &&
+            DIRECTION.DOWN !== this.direction
+        ) {
+            // key up
+            this.direction = DIRECTION.UP;
+            // console.log(this.direction);
+        }
+        if (DIRECTION.DOWN.includes(e.code) &&
+            DIRECTION.DOWN !== this.direction &&
+            DIRECTION.UP !== this.direction
+        ) {
+            // key down
+            this.direction = DIRECTION.DOWN;
+            // console.log(this.direction);
+        }
+        if (DIRECTION.RIGHT.includes(e.code) &&
+            DIRECTION.RIGHT !== this.direction &&
+            DIRECTION.LEFT !== this.direction
+        ) {
+            // key right
+            this.direction = DIRECTION.RIGHT;
+            // console.log(this.direction);
+        }
+        if (DIRECTION.LEFT.includes(e.code) &&
+            DIRECTION.LEFT !== this.direction &&
+            DIRECTION.RIGHT !== this.direction
+        ) {
+            //key left
+            this.direction = DIRECTION.LEFT;
+            // console.log(this.direction);
+        }
     }
-    if (DIRECTION.LEFT.includes(e.code) && DIRECTION.LEFT !== this.direction) {
-      //key left
-      this.direction = DIRECTION.LEFT;
-      console.log(this.direction);
-    }
-  }
 }
