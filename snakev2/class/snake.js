@@ -10,6 +10,7 @@ export default class Snake {
         this.keydown = this.keydown.bind(this);
         document.addEventListener("keydown", this.keydown);
     }
+    // set cells(cells) { this.cells = cells }
     draw(ctx) {
         this.cells.forEach((cell) => {
             cell.draw(ctx);
@@ -18,7 +19,9 @@ export default class Snake {
     }
     move(ctx) {
         // add new head
-        this.cells.unshift(this.getNextStep());
+        const nextSteep = this.getNextStep()
+        if (nextSteep == null) console.log(nextSteep);
+        this.cells.unshift(nextSteep);
         // draw snake
         this.draw(ctx)
         //remove teil
@@ -35,18 +38,19 @@ export default class Snake {
         // console.log(this.direction);
         // get new location
         if (this.direction === DIRECTION.UP) {
-            newCell.y -= newCell.height + 2;
+            newCell.y -= newCell.height;
         }
         if (this.direction === DIRECTION.DOWN) {
-            newCell.y += newCell.height + 2;
+            newCell.y += newCell.height;
         }
         if (this.direction === DIRECTION.RIGHT) {
-            newCell.x += newCell.width + 2;
+            newCell.x += newCell.width;
         }
         if (this.direction === DIRECTION.LEFT) {
-            newCell.x -= newCell.width + 2;
+            newCell.x -= newCell.width;
         }
-        if (newCell == this.cells[0]) return false;
+        if (newCell == this.cells[0]) return null;
+        // newCell.color = `#` + Math.floor(Math.random() * 16777215).toString(16);
         return newCell;
     }
 
