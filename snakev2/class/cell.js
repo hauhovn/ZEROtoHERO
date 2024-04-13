@@ -60,8 +60,9 @@ export default class Cell {
         console.log(`${title}[${this.x}:${this.y}][${this.width} x ${this.height}]`);
     }
 
-    draw(ctx) {
-        ctx.fillStyle = this.color;
+    draw(ctx,color=null) {
+        // setCommonStyle(ctx);
+        color==null?ctx.fillStyle = this.color:ctx.fillStyle = color;
         ctx.fillRect(this.x, this.y, this.width, this.height);
     }
 
@@ -70,4 +71,9 @@ export default class Cell {
         ctx.clearRect(this.x, this.y, this.width, this.height);
     }
 }
-
+function setCommonStyle(ctx){
+    ctx.shadowColor = "#d53";
+    ctx.shadowBlur = 20;
+    ctx.lineJoim = "bevel";
+    ctx.lineWidth = 5;
+}

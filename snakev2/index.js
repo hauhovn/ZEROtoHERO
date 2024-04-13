@@ -2,13 +2,16 @@ import Cell from "./class/cell.js";
 import Snake from "./class/snake.js";
 import { THEME_COLORS } from "./constants.js";
 
+const score = document.getElementById("score");
 const canvas = document.getElementById("game");
 const context = canvas.getContext("2d");
 
 const GAME_SETTING = {
   WIDTH: 400,
+  VERTI_CELL_NUM: 10,
   HEIGHT: 400,
-  CELL_WIDTH: 20,
+  HORI_CELL_NUM: 10,
+  CELL_WIDTH: 40,
   SPACE: 2,
   WALL_WIDTH: 5,
   WALL_COLOR: THEME_COLORS.DARK,
@@ -32,16 +35,27 @@ const initCells2 = [
   new Cell(40, 40, GAME_SETTING.CELL_WIDTH, GAME_SETTING.CELL_WIDTH),
 ];
 
-const snake = new Snake(initCells2, .5);
-var count = 0;
+const snake = new Snake(initCells2, initCells2.length);
+var food = undefined;
+var mScore = 0;
 
-// console.log(snake);
+// MAIN FUNCTION
 function gameLoop() {
+  //draw snake
   snake.draw(context);
-  // check walls &&
-  // add next steep to cells
+  //frist spawn food
+  if (food == undefined) {
+    food = new Cell(
+      getRandomCell().x,
+      getRandomCell().y,
+      GAME_SETTING.CELL_WIDTH,
+      GAME_SETTING.CELL_WIDTH,
+      'yellow'
+    );
+    food.draw(context);
+  }
+  // check walls add next steep to cells
   const next = isSnakeCollideWalls();
-  console.log(next);
   if (next.isChanged) {
     snake.cells.unshift(next.value);
     snake.draw(context);
@@ -50,13 +64,31 @@ function gameLoop() {
     //move
     snake.move(context);
   }
+   //check die
+   if (snake.isDie()) {
+    //aler end game
+    alert(`Your score: ${mScore}`);
+    mScore=0;
+    score.textContent=mScore;
+    //reset game
+    context.clearRect(0,0,GAME_SETTING.WIDTH,GAME_SETTING.HEIGHT)
+    console.log(snake.cells.length);
+    snake.cells =initCells2;
+    console.log(snake.cells.length);
+    snake.draw(context)
+    spawnFood(context);
+  }
 
-  // set speed
-  // if (count > 10) { snake.speed = 2; }
-  // if (count > 20) { snake.speed = 3; }
-  // if (count > 30) { snake.speed = 4; }
-  // count++
-  setTimeout(gameLoop, 1000 / (6 * snake.speed));
+  // check snake eat food
+  if (snake.eat(food)) {
+    snake.grow();
+    spawnFood(context);
+
+    mScore++;
+    score.textContent = mScore;
+  }
+
+  setTimeout(gameLoop, 1000 / 6);
 }
 gameLoop();
 // setInterval(gameLoop, 1000 / 6 / snake.speed)
@@ -80,8 +112,9 @@ function initCells() {
 function isSnakeCollideWalls() {
   const nextSteep = snake.getNextStep();
   let isChanged = false;
+  if(!nextSteep)return ({isChanged});
   if (nextSteep.x < 0) {
-    nextSteep.x = GAME_SETTING.WIDTH-GAME_SETTING.CELL_WIDTH;
+    nextSteep.x = GAME_SETTING.WIDTH - GAME_SETTING.CELL_WIDTH;
     isChanged = true;
   }
   if (nextSteep.x >= GAME_SETTING.WIDTH) {
@@ -93,8 +126,39 @@ function isSnakeCollideWalls() {
     isChanged = true;
   }
   if (nextSteep.y < 0) {
-    nextSteep.y = GAME_SETTING.HEIGHT-GAME_SETTING.CELL_WIDTH;
+    nextSteep.y = GAME_SETTING.HEIGHT - GAME_SETTING.CELL_WIDTH;
     isChanged = true;
   }
   return { isChanged, value: nextSteep };
+}
+
+function spawnFood(ctx) {
+  let isFoodOnSnake;
+  do {
+    // Tạo vị trí ngẫu nhiên cho thức ăn
+    food.x = getRandomCell().x;
+    food.y = getRandomCell().y;
+    // Mặc định không có thức ăn trên rắn
+    isFoodOnSnake = false;
+    // Kiểm tra xem vị trí của thức ăn mới có trùng với bất kỳ phần tử nào của rắn không
+    for (let i = 0; i < snake.cells.length; i++) {
+      const cell = snake.cells[i];
+      if (cell.x === food.x && cell.y === food.y) {
+        isFoodOnSnake = true;
+        break;
+      }
+    }
+  } while (isFoodOnSnake);
+
+  food.draw(ctx);
+}
+
+function getRandomCell() {
+  const x =
+    Math.floor(Math.random() * GAME_SETTING.VERTI_CELL_NUM) *
+    GAME_SETTING.CELL_WIDTH;
+  const y =
+    Math.floor(Math.random() * GAME_SETTING.HORI_CELL_NUM) *
+    GAME_SETTING.CELL_WIDTH;
+  return { x, y };
 }

@@ -10,15 +10,21 @@
   --dark-color: #ff000033;
   --background-color: #ff000033;
   --small-size: 12px;
-  --medium-size: 12px;
-  --lagre-size: 12px;
+  --medium-size: 24px;
+  --lagre-size: 36px;
   --margin-size: 2px;
   --border-w-size: 2px;
 }
 
 body {
   background-color: var(--background-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
 }
 p {
-  font-size: var(--lagre-size);
+  font-size: 4em;
+  font-family:Tahoma,sans-serif;
+  color: aliceblue;
 }

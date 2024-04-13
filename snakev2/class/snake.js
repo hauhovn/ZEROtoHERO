@@ -2,21 +2,25 @@ import { DIRECTION } from "../text-constants.js";
 import Cell from "./cell.js";
 
 export default class Snake {
-  constructor(cells, speed = 1, direction = DIRECTION.RIGHT) {
+  constructor(cells, length = 3, direction = DIRECTION.RIGHT) {
     this.cells = cells;
-    this.speed = speed;
+    this.length = length;
     this.direction = direction;
     // document.addEventListener("keydown", (e) => this.keydown(e));
     this.keydown = this.keydown.bind(this);
     document.addEventListener("keydown", this.keydown);
   }
-  // set cells(cells) { this.cells = cells }
+  set cells(cells){
+    this._cells=cells;
+  }
   draw(ctx) {
-    this.cells.forEach((cell) => {
+    
+    if(this.cells)this.cells.forEach((cell) => {
       cell.draw(ctx);
     });
   }
   move(ctx) {
+    if(!this.cells)return;
     // add new head
     const nextSteep = this.getNextStep();
     if (nextSteep == null) console.log(nextSteep);
@@ -24,18 +28,38 @@ export default class Snake {
     // draw snake
     this.draw(ctx);
     //remove teil
-    this.removeTeil(ctx);
+    this.cells.length >= this.length +1 && this.removeTeil(ctx);
+  }
+  isDie(){
+    if(!this.cells)return;
+    if (this.cells.length < 4) return false;
+    const head = this.cells[0]; // Phần tử đầu tiên của rắn
+    for (let i = 1; i < this.cells.length; i++) {
+        if (head.x === this.cells[i].x && head.y === this.cells[i].y) {
+            return true; // Nếu đầu của rắn trùng với bất kỳ phần tử nào khác, rắn đã chết
+        }
+    }
+    return false;
   }
 
   removeTeil(ctx) {
     this.cells[this.cells.length - 1].clear(ctx);
     this.cells.pop();
   }
+  grow(){
+    const head = Cell.clone(this.cells[0]);
+    this.cells.unshift(head);
+  }
   eat(food) {
-    food.log(`Your food:`);
+    if (!this.cells) return false;
+      if (this.cells[0].x == food.x && this.cells[0].y == food.y) {
+        return true;
+      }
+    return false;
   }
 
   getNextStep() {
+    if(!this.cells)return;
     const newCell = Cell.clone(this.cells[0]);
     // console.log(this.direction);
     // get new location
@@ -51,7 +75,7 @@ export default class Snake {
     if (this.direction === DIRECTION.LEFT) {
       newCell.x -= newCell.width;
     }
-    if (newCell == this.cells[0]) return null;
+    if (newCell == this.cells[0] || newCell==this.cells[1]) return null;
     // newCell.color = `#` + Math.floor(Math.random() * 16777215).toString(16);
     return newCell;
   }
