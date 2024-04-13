@@ -1,15 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Snake</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-    <p id="score">0</p>
-    <canvas id="game"></canvas>
+    <div>
+        <p id="score">0</p>
+        <canvas id="game"></canvas>
+    </div>
+    <div class="history">
+        <p>Highest score: <a id="hightest-score">0</a></p>
+        <ul id="score-history">
+            <li>No infomation</li>
+        </ul>
+    </div>
     <!-- thêm artri type-module để gọi thêm module bên trong -->
     <script type="module" src="index.js"></script>
 </body>
+
 </html>
